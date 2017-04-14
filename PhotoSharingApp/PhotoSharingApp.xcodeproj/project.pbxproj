@@ -16,6 +16,7 @@
 		7A7BBEB81EA12C8900DA3D6E /* LaunchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEB71EA12C8900DA3D6E /* LaunchViewModel.swift */; };
 		7A7BBEBA1EA133BE00DA3D6E /* LaunchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEB91EA133BE00DA3D6E /* LaunchViewModelTests.swift */; };
 		7A7BBEBC1EA134FE00DA3D6E /* PhotosListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEBB1EA134FE00DA3D6E /* PhotosListViewModel.swift */; };
+		7A7BBEBE1EA13EE900DA3D6E /* PhotosListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEBD1EA13EE900DA3D6E /* PhotosListViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		7A7BBEB71EA12C8900DA3D6E /* LaunchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LaunchViewModel.swift; path = ViewModels/LaunchViewModel.swift; sourceTree = "<group>"; };
 		7A7BBEB91EA133BE00DA3D6E /* LaunchViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewModelTests.swift; sourceTree = "<group>"; };
 		7A7BBEBB1EA134FE00DA3D6E /* PhotosListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotosListViewModel.swift; path = ViewModels/PhotosListViewModel.swift; sourceTree = "<group>"; };
+		7A7BBEBD1EA13EE900DA3D6E /* PhotosListViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosListViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				7A7BBEA71EA120E300DA3D6E /* PhotoSharingAppTests.swift */,
 				7A7BBEA91EA120E300DA3D6E /* Info.plist */,
 				7A7BBEB91EA133BE00DA3D6E /* LaunchViewModelTests.swift */,
+				7A7BBEBD1EA13EE900DA3D6E /* PhotosListViewControllerTests.swift */,
 			);
 			path = PhotoSharingAppTests;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			files = (
 				7A7BBEA81EA120E300DA3D6E /* PhotoSharingAppTests.swift in Sources */,
 				7A7BBEBA1EA133BE00DA3D6E /* LaunchViewModelTests.swift in Sources */,
+				7A7BBEBE1EA13EE900DA3D6E /* PhotosListViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
