@@ -53,6 +53,7 @@ class LaunchViewController: UIViewController {
         button.setTitleColor(UIColor.white, for: .normal)
         button.setTitleColor(UIColor.gray, for: .highlighted)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+        button.addTarget(self, action: #selector(LaunchViewController.buttonTapped), for: .touchUpInside)
         mainStackView.addArrangedSubview(button)
     }
 
@@ -64,5 +65,11 @@ class LaunchViewController: UIViewController {
         constraints.append(mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor))
 
         NSLayoutConstraint.activate(constraints)
+    }
+
+    @objc fileprivate func buttonTapped() {
+        let listViewModel = PhotosListViewModel()
+        let listViewController = PhotosListViewController(viewModel: listViewModel)
+        navigationController?.pushViewController(listViewController, animated: true)
     }
 }
