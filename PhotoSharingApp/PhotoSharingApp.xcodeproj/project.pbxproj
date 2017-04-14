@@ -14,6 +14,7 @@
 		7A7BBEA81EA120E300DA3D6E /* PhotoSharingAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEA71EA120E300DA3D6E /* PhotoSharingAppTests.swift */; };
 		7A7BBEB61EA12C7200DA3D6E /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEB51EA12C7200DA3D6E /* LaunchViewController.swift */; };
 		7A7BBEB81EA12C8900DA3D6E /* LaunchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEB71EA12C8900DA3D6E /* LaunchViewModel.swift */; };
+		7A7BBEBA1EA133BE00DA3D6E /* LaunchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEB91EA133BE00DA3D6E /* LaunchViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		7A7BBEA91EA120E300DA3D6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A7BBEB51EA12C7200DA3D6E /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LaunchViewController.swift; path = ViewControllers/LaunchViewController.swift; sourceTree = "<group>"; };
 		7A7BBEB71EA12C8900DA3D6E /* LaunchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LaunchViewModel.swift; path = ViewModels/LaunchViewModel.swift; sourceTree = "<group>"; };
+		7A7BBEB91EA133BE00DA3D6E /* LaunchViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			children = (
 				7A7BBEA71EA120E300DA3D6E /* PhotoSharingAppTests.swift */,
 				7A7BBEA91EA120E300DA3D6E /* Info.plist */,
+				7A7BBEB91EA133BE00DA3D6E /* LaunchViewModelTests.swift */,
 			);
 			path = PhotoSharingAppTests;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A7BBEA81EA120E300DA3D6E /* PhotoSharingAppTests.swift in Sources */,
+				7A7BBEBA1EA133BE00DA3D6E /* LaunchViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
