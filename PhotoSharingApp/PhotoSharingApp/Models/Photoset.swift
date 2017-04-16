@@ -13,6 +13,7 @@ struct Photoset {
     let primary: String
     let owner: String
     let ownerName: String
+    let photosetTitle: String
     let photos: [Photo]
 
     init?(dictionary: [String: Any]) {
@@ -27,7 +28,8 @@ struct Photoset {
         guard let id = dictionary["id"] as? String,
         let primary = dictionary["primary"] as? String,
         let owner = dictionary["owner"] as? String,
-        let ownerName = dictionary["ownername"] as? String else {
+        let ownerName = dictionary["ownername"] as? String,
+        let title = dictionary["title"] as? String else {
             return nil
         }
 
@@ -36,5 +38,6 @@ struct Photoset {
         self.owner = owner
         self.ownerName = ownerName
         self.photos = photos
+        self.photosetTitle = title
     }
 }

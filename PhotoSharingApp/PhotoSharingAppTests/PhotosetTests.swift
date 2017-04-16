@@ -18,12 +18,14 @@ class PhotosetTests: XCTestCase {
         let expectedOwner = "34478335@N00"
         let expectedOwnerName = "Barry Brown "
         let expectedPhotoCount = 39
+        let expectedPhotosetTitle = "Chee Yi and Zen-zi's Wedding"
 
         XCTAssertEqual(photoset.photosetID, expectedPhotosetID)
         XCTAssertEqual(photoset.primary, expectedPrimary)
         XCTAssertEqual(photoset.owner, expectedOwner)
         XCTAssertEqual(photoset.ownerName, expectedOwnerName)
         XCTAssertEqual(photoset.photos.count, expectedPhotoCount)
+        XCTAssertEqual(photoset.photosetTitle, expectedPhotosetTitle)
     }
 
     // MARK: - Private

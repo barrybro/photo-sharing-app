@@ -25,6 +25,8 @@ class PhotosListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = viewModel.photosetTitle()
+
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
     }
 

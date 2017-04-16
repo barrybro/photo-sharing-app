@@ -9,8 +9,12 @@
 import Foundation
 
 struct PhotosListViewModel {
-    let screenTitle = "Photos List"
+
     let photoset: Photoset
+
+    func photosetTitle() -> String {
+        return photoset.photosetTitle
+    }
 }
 
 let url = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=91254bea8c4aa44590f868e76a44bf85&photoset_id=72157680286729381&user_id=34478335%40N00&format=json&nojsoncallback=1&api_sig=3f23e5c0aa4d3beadcf93661f724bd8f"

@@ -14,8 +14,8 @@ class PhotosListViewModelTests: XCTestCase {
     func testTitle() {
         let photoset = mockPhotoset()
         let viewModel = PhotosListViewModel(photoset: photoset)
-        let expectedScreenTitle = "Photos List"
-        XCTAssertEqual(expectedScreenTitle, viewModel.screenTitle)
+        let expectedScreenTitle = "Chee Yi and Zen-zi's Wedding"
+        XCTAssertEqual(expectedScreenTitle, viewModel.photosetTitle())
     }
 
     // MARK: - Private
