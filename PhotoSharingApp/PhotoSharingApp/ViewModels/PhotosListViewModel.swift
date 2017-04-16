@@ -28,14 +28,18 @@ struct PhotosetFetcher {
     static let apiSigURL = "&api_sig"
     static let apiSigID = "3f23e5c0aa4d3beadcf93661f724bd8f"
 
-    static func makeRequestURL() -> URL {
+    static func makeRequestURL() -> URL? {
         var requestURL = baseURL + apiURL + apiKey + photosetURL + photosetID + userURL + userID + formatURL + formatType + apiSigURL + apiSigID
         requestURL = requestURL.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        return URL(string: requestURL)!
+        return URL(string: requestURL)
     }
 
     static func fetchPhotosets(completion: @escaping (_ photoset: Photoset?) -> Void) {
-        let requestURL = makeRequestURL()
+        guard let requestURL = makeRequestURL() else {
+            print("Error building request URL")
+            completion(nil)
+            return
+        }
         let session = URLSession(configuration: URLSessionConfiguration.default)
         let downloadTask = session.dataTask(with: requestURL, completionHandler: {(data, response, error) in
             guard let responseData = data else {
@@ -44,7 +48,7 @@ struct PhotosetFetcher {
                 // Handle errors?
                 return
             }
-            guard let jsonResponse: [String: Any] = try? JSONSerialization.jsonObject(with: responseData, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String : Any] else {
+            guard let jsonResponse: [String: Any] = try? JSONSerialization.jsonObject(with: responseData) as! [String : Any] else {
                 completion(nil)
                 return
             }

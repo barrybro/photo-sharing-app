@@ -11,17 +11,19 @@ import XCTest
 
 class PhotosetTests: XCTestCase {
     func testPhotosetInstantiation() {
-        let dictionary = loadDictionaryFromJSONFile(path: "photoset")
-        guard let photosetDictionary = dictionary["photoset"] as? [String: Any] else {
-            XCTFail("photoset dictionary not found")
-            return
-        }
+        let photoset = mockPhotoset()
 
-        guard let photoset = Photoset(dictionary: photosetDictionary) else {
-            XCTFail("Failed to build photoset from dictionary")
-            return
-        }
-        XCTAssertEqual(photoset.photosetID, "72157680286729381")
+        let expectedPhotosetID = "72157680286729381"
+        let expectedPrimary = "33720404102"
+        let expectedOwner = "34478335@N00"
+        let expectedOwnerName = "Barry Brown "
+        let expectedPhotoCount = 39
+
+        XCTAssertEqual(photoset.photosetID, expectedPhotosetID)
+        XCTAssertEqual(photoset.primary, expectedPrimary)
+        XCTAssertEqual(photoset.owner, expectedOwner)
+        XCTAssertEqual(photoset.ownerName, expectedOwnerName)
+        XCTAssertEqual(photoset.photos.count, expectedPhotoCount)
     }
 
     // MARK: - Private
@@ -46,6 +48,17 @@ class PhotosetTests: XCTestCase {
             XCTFail("unable to parse into dictionary")
             return [String: Any]()
         }
-        return dictionary
+
+        guard let photosetDictionary = dictionary["photoset"] as? [String: Any] else {
+            XCTFail("photoset dictionary not found")
+            return [String: Any]()
+        }
+
+        return photosetDictionary
+    }
+
+    fileprivate func mockPhotoset() -> Photoset {
+        let dictionary = loadDictionaryFromJSONFile(path: "photoset")
+        return Photoset(dictionary: dictionary)!
     }
 }
