@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAuthSwift
 
 class LaunchViewController: UIViewController {
 
@@ -16,7 +17,21 @@ class LaunchViewController: UIViewController {
 
     let loadingView = UIView()
 
+    let authButton: UIButton = {
+        let authButton = UIButton(type: .custom)
+        authButton.translatesAutoresizingMaskIntoConstraints = false
+        authButton.setTitle("Need to authorize", for: .normal)
+        authButton.backgroundColor = UIColor.orange
+        authButton.setTitleColor(UIColor.white, for: .normal)
+        authButton.setTitleColor(UIColor.gray, for: .highlighted)
+        authButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+
+        return authButton
+    }()
+
     let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+
+    var oauthswift: OAuthSwift?
 
     init(viewModel: LaunchViewModel) {
         self.viewModel = viewModel
@@ -47,6 +62,9 @@ class LaunchViewController: UIViewController {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.axis = .vertical
         view.addSubview(mainStackView)
+
+        authButton.addTarget(self, action: #selector(LaunchViewController.authButtonTapped), for: .touchUpInside)
+        mainStackView.addArrangedSubview(authButton)
 
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -116,6 +134,10 @@ class LaunchViewController: UIViewController {
         }
     }
 
+    @objc fileprivate func authButtonTapped() {
+        doAuthService()
+    }
+
     @objc fileprivate func buttonTapped() {
         viewModel.loadPhotoset(showLoadingBlock: { [weak self] in
             self?.displayLoadingView()
@@ -136,6 +158,37 @@ class LaunchViewController: UIViewController {
                     alert.addAction(dismissAction)
                     self?.present(alert, animated: true, completion: nil)
                 }
+        })
+    }
+}
+
+extension LaunchViewController {
+    func doAuthService() {
+
+        let oauthswift = WebService.oauthSwift()
+
+        self.oauthswift = oauthswift
+
+        let handler = SafariURLHandler(viewController: self, oauthSwift: oauthswift)
+        handler.presentCompletion = {
+            print("Safari presented")
+        }
+        handler.dismissCompletion = {
+            print("Safari dismissed")
+        }
+
+        oauthswift.authorizeURLHandler = handler
+
+        let _ = oauthswift.authorize(
+            withCallbackURL: URL(string: "oauth-swift://PhotoSharingApp/flickr")!,
+            success: { [weak self] credential, response, parameters in
+                let token = credential.oauthToken
+                let secret = credential.oauthTokenSecret
+                print("😎 token is \(token) and secret is \(secret)")
+                self?.authButton.setTitle("Authorized", for: .normal)
+        },
+            failure: { error in
+                print(error.description)
         })
     }
 }

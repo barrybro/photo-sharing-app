@@ -39,7 +39,7 @@ class PhotosListViewModelTests: XCTestCase {
 
     // MARK: - Private
 
-    fileprivate func loadDictionaryFromJSONFile(path: String) -> [String: Any] {
+    fileprivate func loadDictionaryFromJSONFile(_ path: String) -> [String: Any] {
         guard let fileURL = Bundle(for: type(of: self)).url(forResource: path, withExtension: "json") else {
             XCTFail("unable to generate filePath")
             return [String: Any]()

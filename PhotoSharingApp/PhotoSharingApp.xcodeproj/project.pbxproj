@@ -24,6 +24,7 @@
 		7A7BBEC61EA322B700DA3D6E /* photoset.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A7BBEC51EA322B700DA3D6E /* photoset.json */; };
 		7A7BBEC91EA44A6E00DA3D6E /* PhotoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBEC81EA44A6E00DA3D6E /* PhotoTableViewCell.swift */; };
 		7A7BBECC1EA468D000DA3D6E /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A7BBECB1EA468D000DA3D6E /* SDWebImage.framework */; };
+		7A7BBED11EA50DD900DA3D6E /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7BBED01EA50DD800DA3D6E /* WebService.swift */; };
 		A465E0D52FCD101E97F42AAF /* Pods_PhotoSharingAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD83E4A060A10CB53A460797 /* Pods_PhotoSharingAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		7A7BBEC81EA44A6E00DA3D6E /* PhotoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoTableViewCell.swift; path = Views/PhotoTableViewCell.swift; sourceTree = "<group>"; };
 		7A7BBECB1EA468D000DA3D6E /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = "Pods/../build/Debug-iphoneos/SDWebImage/SDWebImage.framework"; sourceTree = "<group>"; };
 		7A7BBECD1EA46EDD00DA3D6E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		7A7BBED01EA50DD800DA3D6E /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebService.swift; path = Services/WebService.swift; sourceTree = "<group>"; };
 		87B355F17D1867226565DF14 /* Pods-PhotoSharingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoSharingApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoSharingApp/Pods-PhotoSharingApp.release.xcconfig"; sourceTree = "<group>"; };
 		A8A9F56E19BF64C2D23C8418 /* Pods-PhotoSharingAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoSharingAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoSharingAppTests/Pods-PhotoSharingAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DD83E4A060A10CB53A460797 /* Pods_PhotoSharingAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoSharingAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +113,7 @@
 		7A7BBE911EA120E300DA3D6E /* PhotoSharingApp */ = {
 			isa = PBXGroup;
 			children = (
+				7A7BBECF1EA50DB500DA3D6E /* Services */,
 				7A7BBEB21EA1218B00DA3D6E /* Model */,
 				7A7BBEC71EA44A4000DA3D6E /* Views */,
 				7A7BBEB41EA121B300DA3D6E /* ViewControllers */,
@@ -169,6 +172,14 @@
 				7A7BBEC81EA44A6E00DA3D6E /* PhotoTableViewCell.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		7A7BBECF1EA50DB500DA3D6E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				7A7BBED01EA50DD800DA3D6E /* WebService.swift */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 		AF6AFEB15F3018CAB7B6BBD2 /* Pods */ = {
@@ -250,11 +261,13 @@
 					7A7BBE8E1EA120E300DA3D6E = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = F8WZ8QMVC9;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					7A7BBEA21EA120E300DA3D6E = {
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = F8WZ8QMVC9;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 7A7BBE8E1EA120E300DA3D6E;
 					};
@@ -397,6 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A7BBED11EA50DD900DA3D6E /* WebService.swift in Sources */,
 				7A7BBEC91EA44A6E00DA3D6E /* PhotoTableViewCell.swift in Sources */,
 				7A7BBEC21EA3207B00DA3D6E /* Photo.swift in Sources */,
 				7A7BBE951EA120E300DA3D6E /* PhotosListViewController.swift in Sources */,
