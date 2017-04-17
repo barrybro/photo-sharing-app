@@ -16,7 +16,13 @@ class PhotoTableViewCell: UITableViewCell {
         }
     }
 
+    fileprivate let photoImageView = UIImageView()
+
     fileprivate let photoTitleLabel = UILabel()
+
+    let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+
+    fileprivate let photoWH: CGFloat = 30.0
 
     // MARK: - Initializers
 
@@ -33,14 +39,38 @@ class PhotoTableViewCell: UITableViewCell {
     fileprivate func setupViews() {
         photoTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(photoTitleLabel)
+        photoTitleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        photoTitleLabel.adjustsFontSizeToFitWidth = true
+        photoTitleLabel.minimumScaleFactor = 0.8
+
+        photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(photoImageView)
+        photoImageView.backgroundColor = UIColor.gray
+
+        loadingActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(loadingActivityIndicatorView)
     }
 
     fileprivate func setupConstraints() {
+        let margin: CGFloat = 16.0
+
         var constraints: [NSLayoutConstraint] = []
-        constraints.append(photoTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor))
-        constraints.append(photoTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor))
-        constraints.append(photoTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor))
-        constraints.append(photoTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor))
+
+        constraints.append(photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: margin))
+        constraints.append(photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: margin))
+        constraints.append(photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -margin))
+        constraints.append(photoImageView.heightAnchor.constraint(equalToConstant: photoWH))
+        constraints.append(photoImageView.widthAnchor.constraint(equalToConstant: photoWH))
+
+        constraints.append(photoTitleLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: margin))
+        constraints.append(photoTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margin))
+        constraints.append(photoTitleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor))
+        constraints.append(photoTitleLabel.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor))
+        constraints.append(photoTitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor))
+
+        constraints.append(loadingActivityIndicatorView.centerYAnchor.constraint(equalTo: photoImageView.centerYAnchor))
+        constraints.append(loadingActivityIndicatorView.centerXAnchor.constraint(equalTo: photoImageView.centerXAnchor))
+
         NSLayoutConstraint.activate(constraints)
     }
 

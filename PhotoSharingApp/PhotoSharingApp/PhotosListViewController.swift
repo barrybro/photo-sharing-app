@@ -28,6 +28,8 @@ class PhotosListViewController: UITableViewController {
         self.title = viewModel.photosetTitle()
 
         tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 62.0 // 16 + 30 + 16
     }
 
     // MARK: - UITableView Datasource and Delegate
