@@ -8,6 +8,8 @@
 
 import UIKit
 
+import SDWebImage
+
 class PhotoTableViewCell: UITableViewCell {
 
     var photo: Photo? {
@@ -22,7 +24,7 @@ class PhotoTableViewCell: UITableViewCell {
 
     let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
 
-    fileprivate let photoWH: CGFloat = 30.0
+    fileprivate let photoWH: CGFloat = 40.0
 
     // MARK: - Initializers
 
@@ -79,6 +81,12 @@ class PhotoTableViewCell: UITableViewCell {
             return
         }
         photoTitleLabel.text = photo.title
+        self.loadingActivityIndicatorView.startAnimating()
 
+        let url = URL(string: "https://farm4.staticflickr.com/3955/33720404102_d599b987b7_s.jpg")
+
+        photoImageView.sd_setImage(with: url) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, theURL: URL?) in
+            self.loadingActivityIndicatorView.stopAnimating()
+        }
     }
 }
