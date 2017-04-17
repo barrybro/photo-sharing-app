@@ -54,7 +54,7 @@ class PhotoTableViewCell: UITableViewCell {
     }
 
     fileprivate func setupConstraints() {
-        let margin: CGFloat = 16.0
+        let margin: CGFloat = 12.0
 
         var constraints: [NSLayoutConstraint] = []
 

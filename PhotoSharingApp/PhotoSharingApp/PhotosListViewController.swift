@@ -29,7 +29,7 @@ class PhotosListViewController: UITableViewController {
 
         tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 72.0 // 16 + 40 + 16
+        tableView.estimatedRowHeight = 64.0 // 12 + 40 + 12
     }
 
     // MARK: - UITableView Datasource and Delegate
@@ -49,5 +49,14 @@ class PhotosListViewController: UITableViewController {
 
         cell.photo = viewModel.photo(index: indexPath.row)
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let photo = viewModel.photo(index: indexPath.row) else {
+            fatalError()
+        }
+        let detailViewModel = PhotoDetailViewModel(photo: photo)
+        let detailViewController = PhotoDetailViewController(viewModel: detailViewModel)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

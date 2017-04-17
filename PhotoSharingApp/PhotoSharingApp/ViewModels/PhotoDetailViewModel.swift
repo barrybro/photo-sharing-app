@@ -10,4 +10,9 @@ import Foundation
 
 struct PhotoDetailViewModel {
     let photo: Photo
+
+    // Date
+    // Views
+    // Tags?
+    // image URL
 }
