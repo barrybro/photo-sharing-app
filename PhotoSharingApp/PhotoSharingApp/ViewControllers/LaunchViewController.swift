@@ -120,8 +120,8 @@ class LaunchViewController: UIViewController {
         viewModel.loadPhotoset(showLoadingBlock: { [weak self] in
             self?.displayLoadingView()
             }, completion: { [weak self] (photoset: Photoset?) in
-            self?.hideLoadingView()
                 if let photoset = photoset {
+                    self?.hideLoadingView()
                     DispatchQueue.main.async {
                         let listViewModel = PhotosListViewModel(photoset: photoset)
                         let listViewController = PhotosListViewController(viewModel: listViewModel)
@@ -129,7 +129,12 @@ class LaunchViewController: UIViewController {
                     }
                 }
                 else {
-                    // DISPLAY ERROR ALERT
+                    let alert = UIAlertController(title: "Uh oh!", message: "Something went wrong fetching your photos", preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { _ in
+                        self?.hideLoadingView()
+                    }
+                    alert.addAction(dismissAction)
+                    self?.present(alert, animated: true, completion: nil)
                 }
         })
     }

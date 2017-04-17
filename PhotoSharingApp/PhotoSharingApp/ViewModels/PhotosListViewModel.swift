@@ -15,6 +15,18 @@ struct PhotosListViewModel {
     func photosetTitle() -> String {
         return photoset.photosetTitle
     }
+
+    func photoCount() -> Int {
+        return photoset.photos.count
+    }
+
+    func photo(index: Int) -> Photo? {
+        let photoCount = photoset.photos.count
+        guard index < photoCount else {
+            return nil
+        }
+        return photoset.photos[index]
+    }
 }
 
 let url = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=91254bea8c4aa44590f868e76a44bf85&photoset_id=72157680286729381&user_id=34478335%40N00&format=json&nojsoncallback=1&api_sig=3f23e5c0aa4d3beadcf93661f724bd8f"
@@ -49,15 +61,18 @@ struct PhotosetFetcher {
             guard let responseData = data else {
                 debugPrint("ERROR \(String(describing: error))")
                 completion(nil)
-                // Handle errors?
                 return
             }
             guard let jsonResponse: [String: Any] = try? JSONSerialization.jsonObject(with: responseData) as! [String : Any] else {
                 completion(nil)
                 return
             }
-
-            guard let photoset = Photoset(dictionary: jsonResponse["photoset"] as! [String : Any]) else {
+            guard let photosetDictionary = jsonResponse["photoset"] as? [String : Any] else {
+                print("parse photoset dictionary error")
+                completion(nil)
+                return
+            }
+            guard let photoset = Photoset(dictionary: photosetDictionary) else {
                 print("parse error")
                 completion(nil)
                 return

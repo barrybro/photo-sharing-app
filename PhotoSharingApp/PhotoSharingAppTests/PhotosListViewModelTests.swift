@@ -1,5 +1,5 @@
 //
-//  PhotosListViewControllerTests.swift
+//  PhotosListViewModelTests.swift
 //  PhotoSharingApp
 //
 //  Created by Barry Brown on 4/14/17.
@@ -16,6 +16,25 @@ class PhotosListViewModelTests: XCTestCase {
         let viewModel = PhotosListViewModel(photoset: photoset)
         let expectedScreenTitle = "Chee Yi and Zen-zi's Wedding"
         XCTAssertEqual(expectedScreenTitle, viewModel.photosetTitle())
+    }
+
+    func testPhotoCount() {
+        let photoset = mockPhotoset()
+        let viewModel = PhotosListViewModel(photoset: photoset)
+        let expectedPhotoCount = 39
+        XCTAssertEqual(expectedPhotoCount, viewModel.photoCount())
+    }
+
+    func testPhotoInBoundsAtIndex() {
+        let photoset = mockPhotoset()
+        let viewModel = PhotosListViewModel(photoset: photoset)
+        XCTAssertNotNil(viewModel.photo(index: 1))
+    }
+
+    func testPhotoAtOutOfBoundsAtIndex() {
+        let photoset = mockPhotoset()
+        let viewModel = PhotosListViewModel(photoset: photoset)
+        XCTAssertNil(viewModel.photo(index: 99))
     }
 
     // MARK: - Private

@@ -27,30 +27,25 @@ class PhotosListViewController: UITableViewController {
         super.viewDidLoad()
         self.title = viewModel.photosetTitle()
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-
-    }
-
-    // MARK: - UITableView Datasource
+    // MARK: - UITableView Datasource and Delegate
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.photoset.photos.count
+        return viewModel.photoCount()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? PhotoTableViewCell else {
+            fatalError()
+        }
 
-        let photo = viewModel.photoset.photos[indexPath.row]
-        cell.textLabel?.text = photo.title
+        cell.photo = viewModel.photo(index: indexPath.row)
         return cell
     }
 }
-
