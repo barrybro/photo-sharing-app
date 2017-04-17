@@ -31,19 +31,65 @@ class WebService {
     static let baseURL = "https://api.flickr.com/services/rest/"
     static let methodURL = "?method="
     static let photosGetSizesMethodKey = "flickr.photos.getSizes"
+    static let photosetsGetPhotosMethodKey = "flickr.photosets.getPhotos"
     static let apiURL = "&api_key="
     static let apiKey = "96ed7003403f50e4a475e91cf172e16d"
     static let photoURL = "&photo_id="
+    static let photosetURL = "&photoset_id="
+    static let photosetID = "72157680286729381"
+
     static let userURL = "&user_id="
     static let userID = "34478335@N00"
+    static let extrasURL = "&extras="
+    static let extrasParameters = "date_taken%2C+geo%2C+tags%2C+machine_tags%2C+o_dims%2C+views%2C+media%2C+path_alias%2C+url_sq%2C+url_t%2C+url_s%2C+url_m"
     static let formatURL = "&format="
     static let formatType = "json&nojsoncallback=1"
     static let authTokenURL = "&auth_token="
-    static let apiSigURL = "&api_sig"
-    static let apiSigID = "3f23e5c0aa4d3beadcf93661f724bd8f"
+
+    // MARK: - Fetch Photosets
+
+    static func makePhotosetRequestURL(photosetID: String) -> URL? {
+        let requestURL = baseURL + methodURL + photosetsGetPhotosMethodKey + apiURL + apiKey + photosetURL + photosetID + userURL + userID + extrasURL + extrasParameters + formatURL + formatType
+        return URL(string: requestURL)
+    }
+
+    static func fetchPhotoset(photosetID: String, completion: @escaping (_ photoset: Photoset?) -> Void) {
+        guard let requestURL = makePhotosetRequestURL(photosetID: photosetID) else {
+            print("Error building request URL")
+            completion(nil)
+            return
+        }
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let downloadTask = session.dataTask(with: requestURL, completionHandler: {(data, response, error) in
+            guard let responseData = data else {
+                debugPrint("ERROR \(String(describing: error))")
+                completion(nil)
+                return
+            }
+            guard let jsonResponse: [String: Any] = try? JSONSerialization.jsonObject(with: responseData) as! [String : Any] else {
+                completion(nil)
+                return
+            }
+            guard let photosetDictionary = jsonResponse["photoset"] as? [String : Any] else {
+                print("parse photoset dictionary error")
+                completion(nil)
+                return
+            }
+            guard let photoset = Photoset(dictionary: photosetDictionary) else {
+                print("parse error")
+                completion(nil)
+                return
+            }
+            completion(photoset)
+        })
+
+        downloadTask.resume()
+    }
+
+    // MARK: - Fetch photos
 
     static func makePhotoRequestURL(photoID: String) -> URL? {
-        var requestURL = baseURL + methodURL + photosGetSizesMethodKey + apiURL + apiKey + photoURL + photoID + formatURL + formatType + apiSigURL + apiSigID
+        var requestURL = baseURL + methodURL + photosGetSizesMethodKey + apiURL + apiKey + photoURL + photoID + formatURL + formatType
         requestURL = requestURL.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         return URL(string: requestURL)
     }
@@ -87,12 +133,13 @@ class WebService {
                 completion(nil)
                 return
             }
-            print("parse success for \(photoURL)")
             completion(photoURL)
         })
 
         downloadTask.resume()
     }
+
+    // MARK: - OAuth and Security
 
     static func oauthSwift() -> OAuth1Swift {
         let oauthSwift = OAuth1Swift(consumerKey: WebService.flickrKey,
@@ -109,61 +156,5 @@ class WebService {
 
     static func fetchToken() -> String? {
         return SAMKeychain.password(forService: WebService.keychainService, account: WebService.keychainAccount)
-    }
-}
-
-//let url = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=91254bea8c4aa44590f868e76a44bf85&photoset_id=72157680286729381&user_id=34478335%40N00&format=json&nojsoncallback=1&api_sig=3f23e5c0aa4d3beadcf93661f724bd8f"
-
-struct PhotosetFetcher {
-    static let baseURL = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos"
-    static let apiURL = "&api_key="
-    static let apiKey = "96ed7003403f50e4a475e91cf172e16d"
-    static let photosetURL = "&photoset_id="
-    static let photosetID = "72157680286729381"
-    static let userURL = "&user_id="
-    static let userID = "34478335@N00"
-    static let formatURL = "&format="
-    static let formatType = "json&nojsoncallback=1"
-    static let apiSigURL = "&api_sig"
-    static let apiSigID = "3f23e5c0aa4d3beadcf93661f724bd8f"
-
-    static func makeRequestURL() -> URL? {
-        var requestURL = baseURL + apiURL + apiKey + photosetURL + photosetID + userURL + userID + formatURL + formatType + apiSigURL + apiSigID
-        requestURL = requestURL.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        return URL(string: requestURL)
-    }
-
-    static func fetchPhotosets(completion: @escaping (_ photoset: Photoset?) -> Void) {
-        guard let requestURL = makeRequestURL() else {
-            print("Error building request URL")
-            completion(nil)
-            return
-        }
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        let downloadTask = session.dataTask(with: requestURL, completionHandler: {(data, response, error) in
-            guard let responseData = data else {
-                debugPrint("ERROR \(String(describing: error))")
-                completion(nil)
-                return
-            }
-            guard let jsonResponse: [String: Any] = try? JSONSerialization.jsonObject(with: responseData) as! [String : Any] else {
-                completion(nil)
-                return
-            }
-            guard let photosetDictionary = jsonResponse["photoset"] as? [String : Any] else {
-                print("parse photoset dictionary error")
-                completion(nil)
-                return
-            }
-            guard let photoset = Photoset(dictionary: photosetDictionary) else {
-                print("parse error")
-                completion(nil)
-                return
-            }
-            print("parse success for \(photoset)")
-            completion(photoset)
-        })
-
-        downloadTask.resume()
     }
 }

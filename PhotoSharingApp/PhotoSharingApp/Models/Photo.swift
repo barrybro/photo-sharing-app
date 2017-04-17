@@ -18,6 +18,11 @@ struct Photo {
     let isPublic: Int
     let isFriend: Int
     let isFamily: Int
+    let thumbnailURL: String
+    let imageURL: String
+    let dateTaken: String
+    let viewCount: String
+    let tags: String
 
     init?(dictionary: [String: Any]) {
         guard let photoID = dictionary["id"] as? String,
@@ -28,7 +33,13 @@ struct Photo {
         let isPrimary = dictionary["isprimary"] as? String,
         let isPublic = dictionary["ispublic"] as? Int,
         let isFriend = dictionary["isfriend"] as? Int,
-            let isFamily = dictionary["isfamily"] as? Int else {
+        let isFamily = dictionary["isfamily"] as? Int,
+        let thumbnailURL = dictionary["url_sq"] as? String,
+        let imageURL = dictionary["url_m"] as? String,
+        let dateTaken = dictionary["datetaken"] as? String,
+        let viewCount = dictionary["views"] as? String,
+        let tags = dictionary["tags"] as? String else {
+            print("🤢 failed to init Photo \(String(describing: dictionary["title"]))")
                 return nil
         }
         self.photoID = photoID
@@ -40,5 +51,10 @@ struct Photo {
         self.isPublic = isPublic
         self.isFriend = isFriend
         self.isFamily = isFamily
+        self.thumbnailURL = thumbnailURL
+        self.imageURL = imageURL
+        self.dateTaken = dateTaken
+        self.viewCount = viewCount
+        self.tags = tags
     }
 }

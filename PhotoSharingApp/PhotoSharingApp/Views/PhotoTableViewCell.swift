@@ -82,13 +82,8 @@ class PhotoTableViewCell: UITableViewCell {
         }
         photoTitleLabel.text = photo.title
         self.loadingActivityIndicatorView.startAnimating()
-
-        WebService.fetchPhoto(identifier: photo.photoID) { (photoURL: String?) in
-            if let photoURL = photoURL {
-                self.photoImageView.sd_setImage(with: URL(string: photoURL)) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, theURL: URL?) in
-                    self.loadingActivityIndicatorView.stopAnimating()
-                }
-            }
+        self.photoImageView.sd_setImage(with: URL(string: photo.thumbnailURL)) { (image: UIImage?, error: Error?, cacheType: SDImageCacheType, theURL: URL?) in
+            self.loadingActivityIndicatorView.stopAnimating()
         }
     }
 }

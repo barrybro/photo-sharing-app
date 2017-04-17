@@ -69,7 +69,7 @@ class PhotosListViewModelTests: XCTestCase {
     }
 
     fileprivate func mockPhotoset() -> Photoset {
-        let dictionary = loadDictionaryFromJSONFile(path: "photoset")
+        let dictionary = loadDictionaryFromJSONFile("photoset-extras")
         return Photoset(dictionary: dictionary)!
     }
 }
