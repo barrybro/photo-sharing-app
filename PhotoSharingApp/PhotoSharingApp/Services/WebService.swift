@@ -8,22 +8,7 @@
 
 import Foundation
 import OAuthSwift
-
-/*
-"https://api.flickr.com/services/rest/" +
-"?method=" +
-"flickr.photos.getSizes" +
-"&api_key=" +
-"b8ed5d6479761720c97348abee0e226e" +
-"&photo_id=" +
-"33720404102" +
-"&format=" +
-"json&nojsoncallback=1" +
-"&auth_token=" +
-"72157682597400176-4b8aae9e574f1785" +
-"&api_sig=" +
-"db0793e31cbfd67d46599308e3605129"
-*/
+import SAMKeychain
 
 class WebService {
 
@@ -36,26 +21,77 @@ class WebService {
     static let authorizeURL = "https://www.flickr.com/services/oauth/authorize"
     static let accessTokenURL = "https://www.flickr.com/services/oauth/access_token"
 
+    // MARK: - Keychain Properties
+
+    static let keychainService = "PhotoSharingAppTokenService"
+    static let keychainAccount = "PhotoSharingApp.keychain"
+
+    // MARK: - URL properties
+
     static let baseURL = "https://api.flickr.com/services/rest/"
     static let methodURL = "?method="
-    static let methodKey = "flickr.photosets.getSizes"
+    static let photosGetSizesMethodKey = "flickr.photos.getSizes"
     static let apiURL = "&api_key="
     static let apiKey = "96ed7003403f50e4a475e91cf172e16d"
     static let photoURL = "&photo_id="
-    static let photoID = "33720404102"
     static let userURL = "&user_id="
     static let userID = "34478335@N00"
     static let formatURL = "&format="
     static let formatType = "json&nojsoncallback=1"
     static let authTokenURL = "&auth_token="
-    static let authToken = "72157682597400176-4b8aae9e574f1785"
     static let apiSigURL = "&api_sig"
     static let apiSigID = "3f23e5c0aa4d3beadcf93661f724bd8f"
 
-    static func makeRequestURL() -> URL? {
-        var requestURL = baseURL + methodURL + methodKey + apiURL + apiKey + photoURL + photoID + formatURL + formatType + authTokenURL + authToken + apiSigURL + apiSigID
+    static func makePhotoRequestURL(photoID: String) -> URL? {
+        var requestURL = baseURL + methodURL + photosGetSizesMethodKey + apiURL + apiKey + photoURL + photoID + formatURL + formatType + apiSigURL + apiSigID
         requestURL = requestURL.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         return URL(string: requestURL)
+    }
+
+    static func fetchPhoto(identifier: String, completion: @escaping (_ photoURL: String?) -> Void) {
+        guard let requestURL = makePhotoRequestURL(photoID: identifier) else {
+            print("Error building request URL")
+            completion(nil)
+            return
+        }
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let downloadTask = session.dataTask(with: requestURL, completionHandler: {(data, response, error) in
+            guard let responseData = data else {
+                debugPrint("ERROR \(String(describing: error))")
+                completion(nil)
+                return
+            }
+            guard let jsonResponse: [String: Any] = try? JSONSerialization.jsonObject(with: responseData) as! [String : Any] else {
+                completion(nil)
+                return
+            }
+            guard let sizesDictionary = jsonResponse["sizes"] as? [String : Any] else {
+                print("parse photo sizes dictionary error")
+                completion(nil)
+                return
+            }
+            guard let sizesArray = sizesDictionary["size"] as? [[String : Any]] else {
+                print("parse size array error")
+                completion(nil)
+                return
+            }
+            let filteredSizes = sizesArray.filter({ (element) -> Bool in
+                element["label"] as? String == "Square"
+            })
+            guard let thing = filteredSizes.first else {
+                print("oh shit")
+                completion(nil)
+                return
+            }
+            guard let photoURL = thing["source"] as? String else {
+                completion(nil)
+                return
+            }
+            print("parse success for \(photoURL)")
+            completion(photoURL)
+        })
+
+        downloadTask.resume()
     }
 
     static func oauthSwift() -> OAuth1Swift {
@@ -65,6 +101,14 @@ class WebService {
                                      authorizeUrl: WebService.authorizeURL,
                                      accessTokenUrl: WebService.accessTokenURL)
         return oauthSwift
+    }
+
+    static func saveToken(token: String) -> Bool {
+        return SAMKeychain.setPassword(token, forService: WebService.keychainService, account: WebService.keychainAccount)
+    }
+
+    static func fetchToken() -> String? {
+        return SAMKeychain.password(forService: WebService.keychainService, account: WebService.keychainAccount)
     }
 }
 
@@ -120,7 +164,6 @@ struct PhotosetFetcher {
             completion(photoset)
         })
 
-        // Kick things off
         downloadTask.resume()
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import OAuthSwift
+import SAMKeychain
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        setupKeychainAccess()
+
         window = UIWindow(frame: UIScreen.main.bounds)
         let navigationController = UINavigationController(rootViewController: LaunchViewController(viewModel: LaunchViewModel()))
         window?.rootViewController = navigationController
@@ -28,6 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let defaults = UserDefaults.standard
 //        defaults.register(defaults: [Settings.photoFormatKey: Settings.photoFormats[0]])
 //    }
+    fileprivate func setupKeychainAccess() {
+        SAMKeychain.setAccessibilityType(kSecAttrAccessibleWhenUnlocked)
+    }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         // TODO: check source app
