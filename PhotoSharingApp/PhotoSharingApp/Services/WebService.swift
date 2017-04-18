@@ -7,19 +7,13 @@
 //
 
 import Foundation
-import OAuthSwift
-import SAMKeychain
 
 class WebService {
 
-    // MARK: - OAuth Properties
+    // MARK: - Flickr API Properties
 
     static let flickrKey = "96ed7003403f50e4a475e91cf172e16d"
     static let flickrSecret = "588dc19e3d8ab9e2"
-    static let authenticationURLForMyApp = "https://www.flickr.com/auth-72157680536890821"
-    static let requestTokenURL = "https://www.flickr.com/services/oauth/request_token"
-    static let authorizeURL = "https://www.flickr.com/services/oauth/authorize"
-    static let accessTokenURL = "https://www.flickr.com/services/oauth/access_token"
 
     // MARK: - Keychain Properties
 
@@ -42,7 +36,6 @@ class WebService {
     static let extrasParameters = "date_taken%2C+geo%2C+tags%2C+machine_tags%2C+o_dims%2C+views%2C+media%2C+path_alias%2C+url_sq%2C+url_t%2C+url_s%2C+url_m"
     static let formatURL = "&format="
     static let formatType = "json&nojsoncallback=1"
-    static let authTokenURL = "&auth_token="
 
     // MARK: - Fetch Photosets
 
@@ -82,24 +75,5 @@ class WebService {
         })
 
         downloadTask.resume()
-    }
-
-    // MARK: - OAuth and Security
-
-    static func oauthSwift() -> OAuth1Swift {
-        let oauthSwift = OAuth1Swift(consumerKey: WebService.flickrKey,
-                                     consumerSecret: WebService.flickrSecret,
-                                     requestTokenUrl: WebService.requestTokenURL,
-                                     authorizeUrl: WebService.authorizeURL,
-                                     accessTokenUrl: WebService.accessTokenURL)
-        return oauthSwift
-    }
-
-    static func saveToken(token: String) -> Bool {
-        return SAMKeychain.setPassword(token, forService: WebService.keychainService, account: WebService.keychainAccount)
-    }
-
-    static func fetchToken() -> String? {
-        return SAMKeychain.password(forService: WebService.keychainService, account: WebService.keychainAccount)
     }
 }

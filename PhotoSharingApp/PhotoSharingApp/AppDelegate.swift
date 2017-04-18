@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import OAuthSwift
-import SAMKeychain
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,32 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        setupKeychainAccess()
-
         window = UIWindow(frame: UIScreen.main.bounds)
         let navigationController = UINavigationController(rootViewController: LaunchViewController(viewModel: LaunchViewModel()))
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 
-        return true
-    }
-
-//    private func setupDefaults() {
-//        let defaults = UserDefaults.standard
-//        defaults.register(defaults: [Settings.photoFormatKey: Settings.photoFormats[0]])
-//    }
-    fileprivate func setupKeychainAccess() {
-        SAMKeychain.setAccessibilityType(kSecAttrAccessibleWhenUnlocked)
-    }
-
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        // TODO: check source app
-        // e.g. if (options["UIApplicationOpenURLOptionsSourceApplicationKey"] as? String == "com.apple.SafariViewService") { }
-        if let hostURL = url.host {
-            if hostURL == "PhotoSharingApp" {
-                OAuthSwift.handle(url: url)
-            }
-        }
         return true
     }
 
@@ -67,7 +44,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
-
