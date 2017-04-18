@@ -12,10 +12,14 @@ class PhotosListViewController: UITableViewController {
 
     let viewModel: PhotosListViewModel
 
-    fileprivate let reuseIdentifier = "photoCell"
+    fileprivate let reuseIdentifier: String
+
+    // MARK: - Initializers
 
     init(viewModel: PhotosListViewModel) {
         self.viewModel = viewModel
+        reuseIdentifier = viewModel.photoCellReuseIdentifier
+
         super.init(style: .plain)
     }
 
@@ -23,17 +27,21 @@ class PhotosListViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UIViewController
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = viewModel.photosetTitle()
 
         tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = CGFloat(viewModel.estimatedRowHeight)
     }
 
     // MARK: - UITableView Datasource and Delegate
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return viewModel.numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -47,5 +55,14 @@ class PhotosListViewController: UITableViewController {
 
         cell.photo = viewModel.photo(index: indexPath.row)
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let photo = viewModel.photo(index: indexPath.row) else {
+            fatalError()
+        }
+        let detailViewModel = PhotoDetailViewModel(photo: photo)
+        let detailViewController = PhotoDetailViewController(viewModel: detailViewModel)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

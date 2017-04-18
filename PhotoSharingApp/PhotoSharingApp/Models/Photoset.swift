@@ -21,9 +21,8 @@ struct Photoset {
             return nil
         }
 
-        let photos = photosArray.map { (photoDictionary: [String: Any]) -> Photo? in
-            return Photo(dictionary: photoDictionary)
-            }.flatMap { $0 }
+        // create Photo objects from the array and filter out any nil results
+        let photos = photosArray.map { Photo(dictionary: $0) }.flatMap { $0 }
 
         guard let id = dictionary["id"] as? String,
         let primary = dictionary["primary"] as? String,

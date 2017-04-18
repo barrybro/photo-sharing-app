@@ -25,6 +25,20 @@ class PhotosListViewModelTests: XCTestCase {
         XCTAssertEqual(expectedPhotoCount, viewModel.photoCount())
     }
 
+    func testReuseIdentifier() {
+        let photoset = mockPhotoset()
+        let viewModel = PhotosListViewModel(photoset: photoset)
+        let expectedReuseIdentifier = "photoCell"
+        XCTAssertEqual(expectedReuseIdentifier, viewModel.photoCellReuseIdentifier)
+    }
+
+    func testNumberOfSections() {
+        let photoset = mockPhotoset()
+        let viewModel = PhotosListViewModel(photoset: photoset)
+        let expectedNumberOfSections = 1
+        XCTAssertEqual(expectedNumberOfSections, viewModel.numberOfSections)
+    }
+
     func testPhotoInBoundsAtIndex() {
         let photoset = mockPhotoset()
         let viewModel = PhotosListViewModel(photoset: photoset)
@@ -39,7 +53,7 @@ class PhotosListViewModelTests: XCTestCase {
 
     // MARK: - Private
 
-    fileprivate func loadDictionaryFromJSONFile(path: String) -> [String: Any] {
+    fileprivate func loadDictionaryFromJSONFile(_ path: String) -> [String: Any] {
         guard let fileURL = Bundle(for: type(of: self)).url(forResource: path, withExtension: "json") else {
             XCTFail("unable to generate filePath")
             return [String: Any]()
@@ -69,7 +83,7 @@ class PhotosListViewModelTests: XCTestCase {
     }
 
     fileprivate func mockPhotoset() -> Photoset {
-        let dictionary = loadDictionaryFromJSONFile(path: "photoset")
+        let dictionary = loadDictionaryFromJSONFile("photoset-extras")
         return Photoset(dictionary: dictionary)!
     }
 }

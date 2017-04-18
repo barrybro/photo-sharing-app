@@ -1,0 +1,20 @@
+PODS:
+  - OAuthSwift (1.1.1)
+  - SAMKeychain (1.5.2)
+  - SDWebImage (4.0.0):
+    - SDWebImage/Core (= 4.0.0)
+  - SDWebImage/Core (4.0.0)
+
+DEPENDENCIES:
+  - OAuthSwift
+  - SAMKeychain
+  - SDWebImage
+
+SPEC CHECKSUMS:
+  OAuthSwift: 6e3a103b3e5639411769cc7e199ec7e14bd1547f
+  SAMKeychain: 1865333198217411f35327e8da61b43de79b635b
+  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
+
+PODFILE CHECKSUM: d64a9c7ae887e0ac3048d9ac196ba983a64d46a2
+
+COCOAPODS: 1.0.1
