@@ -30,11 +30,9 @@ class WebService {
 
     static let baseURL = "https://api.flickr.com/services/rest/"
     static let methodURL = "?method="
-    static let photosGetSizesMethodKey = "flickr.photos.getSizes"
     static let photosetsGetPhotosMethodKey = "flickr.photosets.getPhotos"
     static let apiURL = "&api_key="
     static let apiKey = "96ed7003403f50e4a475e91cf172e16d"
-    static let photoURL = "&photo_id="
     static let photosetURL = "&photoset_id="
     static let photosetID = "72157680286729381"
 
@@ -81,59 +79,6 @@ class WebService {
                 return
             }
             completion(photoset)
-        })
-
-        downloadTask.resume()
-    }
-
-    // MARK: - Fetch photos
-
-    static func makePhotoRequestURL(photoID: String) -> URL? {
-        var requestURL = baseURL + methodURL + photosGetSizesMethodKey + apiURL + apiKey + photoURL + photoID + formatURL + formatType
-        requestURL = requestURL.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        return URL(string: requestURL)
-    }
-
-    static func fetchPhoto(identifier: String, completion: @escaping (_ photoURL: String?) -> Void) {
-        guard let requestURL = makePhotoRequestURL(photoID: identifier) else {
-            print("Error building request URL")
-            completion(nil)
-            return
-        }
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        let downloadTask = session.dataTask(with: requestURL, completionHandler: {(data, response, error) in
-            guard let responseData = data else {
-                debugPrint("ERROR \(String(describing: error))")
-                completion(nil)
-                return
-            }
-            guard let jsonResponse: [String: Any] = try? JSONSerialization.jsonObject(with: responseData) as! [String : Any] else {
-                completion(nil)
-                return
-            }
-            guard let sizesDictionary = jsonResponse["sizes"] as? [String : Any] else {
-                print("parse photo sizes dictionary error")
-                completion(nil)
-                return
-            }
-            guard let sizesArray = sizesDictionary["size"] as? [[String : Any]] else {
-                print("parse size array error")
-                completion(nil)
-                return
-            }
-            let filteredSizes = sizesArray.filter({ (element) -> Bool in
-                element["label"] as? String == "Square"
-            })
-            guard let thing = filteredSizes.first else {
-                print("oh shit")
-                completion(nil)
-                return
-            }
-            guard let photoURL = thing["source"] as? String else {
-                completion(nil)
-                return
-            }
-            completion(photoURL)
         })
 
         downloadTask.resume()

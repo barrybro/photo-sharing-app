@@ -25,6 +25,20 @@ class PhotosListViewModelTests: XCTestCase {
         XCTAssertEqual(expectedPhotoCount, viewModel.photoCount())
     }
 
+    func testReuseIdentifier() {
+        let photoset = mockPhotoset()
+        let viewModel = PhotosListViewModel(photoset: photoset)
+        let expectedReuseIdentifier = "photoCell"
+        XCTAssertEqual(expectedReuseIdentifier, viewModel.photoCellReuseIdentifier)
+    }
+
+    func testNumberOfSections() {
+        let photoset = mockPhotoset()
+        let viewModel = PhotosListViewModel(photoset: photoset)
+        let expectedNumberOfSections = 1
+        XCTAssertEqual(expectedNumberOfSections, viewModel.numberOfSections)
+    }
+
     func testPhotoInBoundsAtIndex() {
         let photoset = mockPhotoset()
         let viewModel = PhotosListViewModel(photoset: photoset)

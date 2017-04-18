@@ -24,7 +24,7 @@ class PhotoTableViewCell: UITableViewCell {
 
     let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
 
-    fileprivate let photoWH: CGFloat = 40.0
+    fileprivate let photoWH: CGFloat = 50.0
 
     // MARK: - Initializers
 
@@ -48,6 +48,8 @@ class PhotoTableViewCell: UITableViewCell {
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(photoImageView)
         photoImageView.backgroundColor = UIColor.gray
+        photoImageView.layer.cornerRadius = 4.0
+        photoImageView.layer.masksToBounds = true
 
         loadingActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(loadingActivityIndicatorView)

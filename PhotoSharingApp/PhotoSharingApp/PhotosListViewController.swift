@@ -12,10 +12,12 @@ class PhotosListViewController: UITableViewController {
 
     let viewModel: PhotosListViewModel
 
-    fileprivate let reuseIdentifier = "photoCell"
+    fileprivate let reuseIdentifier: String
 
     init(viewModel: PhotosListViewModel) {
         self.viewModel = viewModel
+        reuseIdentifier = viewModel.photoCellReuseIdentifier
+
         super.init(style: .plain)
     }
 
@@ -29,13 +31,13 @@ class PhotosListViewController: UITableViewController {
 
         tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 64.0 // 12 + 40 + 12
+        tableView.estimatedRowHeight = CGFloat(viewModel.estimatedRowHeight)
     }
 
     // MARK: - UITableView Datasource and Delegate
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return viewModel.numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

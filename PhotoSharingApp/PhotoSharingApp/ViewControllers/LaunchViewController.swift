@@ -17,18 +17,6 @@ class LaunchViewController: UIViewController {
 
     let loadingView = UIView()
 
-    let authButton: UIButton = {
-        let authButton = UIButton(type: .custom)
-        authButton.translatesAutoresizingMaskIntoConstraints = false
-        authButton.setTitle("Need to authorize", for: .normal)
-        authButton.backgroundColor = UIColor.orange
-        authButton.setTitleColor(UIColor.white, for: .normal)
-        authButton.setTitleColor(UIColor.gray, for: .highlighted)
-        authButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
-
-        return authButton
-    }()
-
     let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 
     var oauthswift: OAuthSwift?
@@ -53,6 +41,7 @@ class LaunchViewController: UIViewController {
     }
 
     fileprivate func setupViews() {
+        view.backgroundColor = UIColor.white
         setupMainStackView()
         setupLoadingView()
         setupActivityIndicator()
@@ -63,12 +52,9 @@ class LaunchViewController: UIViewController {
         mainStackView.axis = .vertical
         view.addSubview(mainStackView)
 
-        authButton.addTarget(self, action: #selector(LaunchViewController.authButtonTapped), for: .touchUpInside)
-        mainStackView.addArrangedSubview(authButton)
-
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor.cyan
+        label.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
         label.text = viewModel.labelTitle
@@ -77,10 +63,11 @@ class LaunchViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(viewModel.buttonTitle, for: .normal)
-        button.backgroundColor = UIColor.red
+        button.backgroundColor = UIColor.orange
         button.setTitleColor(UIColor.white, for: .normal)
         button.setTitleColor(UIColor.gray, for: .highlighted)
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
         button.addTarget(self, action: #selector(LaunchViewController.buttonTapped), for: .touchUpInside)
         mainStackView.addArrangedSubview(button)
     }
@@ -103,6 +90,7 @@ class LaunchViewController: UIViewController {
         constraints.append(mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor))
         constraints.append(mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor))
         constraints.append(mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor))
+
 
         constraints.append(loadingView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor))
         constraints.append(loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor))
@@ -134,10 +122,6 @@ class LaunchViewController: UIViewController {
         }
     }
 
-    @objc fileprivate func authButtonTapped() {
-        doAuthService()
-    }
-
     @objc fileprivate func buttonTapped() {
         viewModel.loadPhotoset(showLoadingBlock: { [weak self] in
             self?.displayLoadingView()
@@ -151,8 +135,8 @@ class LaunchViewController: UIViewController {
                     }
                 }
                 else {
-                    let alert = UIAlertController(title: "Uh oh!", message: "Something went wrong fetching your photos", preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { _ in
+                    let alert = UIAlertController(title: self?.viewModel.alertTitle, message: self?.viewModel.alertMessage, preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: self?.viewModel.alertButtonTitle, style: UIAlertActionStyle.default) { _ in
                         self?.hideLoadingView()
                     }
                     alert.addAction(dismissAction)
@@ -164,28 +148,15 @@ class LaunchViewController: UIViewController {
 
 extension LaunchViewController {
     func doAuthService() {
-
         let oauthswift = WebService.oauthSwift()
-
         self.oauthswift = oauthswift
-
-        let handler = SafariURLHandler(viewController: self, oauthSwift: oauthswift)
-        handler.presentCompletion = {
-            print("Safari presented")
-        }
-        handler.dismissCompletion = {
-            print("Safari dismissed")
-        }
-
-        oauthswift.authorizeURLHandler = handler
+        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: oauthswift)
 
         let _ = oauthswift.authorize(
             withCallbackURL: URL(string: "oauth-swift://PhotoSharingApp/flickr")!,
-            success: { [weak self] credential, response, parameters in
-                let token = credential.oauthToken
-                let secret = credential.oauthTokenSecret
-                print("😎 token is \(token) and secret is \(secret)")
-                self?.authButton.setTitle("Authorized", for: .normal)
+            success: { credential, response, parameters in
+                let _ = credential.oauthToken
+                let _ = credential.oauthTokenSecret
         },
             failure: { error in
                 print(error.description)

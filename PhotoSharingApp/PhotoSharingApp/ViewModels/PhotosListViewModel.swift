@@ -12,6 +12,12 @@ struct PhotosListViewModel {
 
     let photoset: Photoset
 
+    let photoCellReuseIdentifier = "photoCell"
+
+    let estimatedRowHeight = 74.0
+
+    let numberOfSections = 1
+
     func photosetTitle() -> String {
         return photoset.photosetTitle
     }

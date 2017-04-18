@@ -9,12 +9,16 @@
 import Foundation
 
 struct LaunchViewModel {
-    let titleString = "Hello World"
+    let titleString = "Flickr Photoset Viewer"
     let loadingTitle = "Loading..."
-    let buttonTitle = "buttonTitle"
+    let buttonTitle = "View Photo Set"
     let loadingDuration: TimeInterval = 0.33
     let labelTitle = "LabelTitle"
     let defaultPhotosetID = "72157680286729381"
+
+    let alertTitle = "Uh oh!"
+    let alertMessage = "Something went wrong fetching your photos."
+    let alertButtonTitle = "OK"
 
     func loadPhotoset(showLoadingBlock: () -> Void, completion: @escaping (_ photoset: Photoset?) -> Void) {
         showLoadingBlock()
