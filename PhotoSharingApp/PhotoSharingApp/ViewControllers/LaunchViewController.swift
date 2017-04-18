@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import OAuthSwift
 
 class LaunchViewController: UIViewController {
 
@@ -18,8 +17,6 @@ class LaunchViewController: UIViewController {
     let viewPhotosButton = UIButton(type: .custom)
     let loadingView = UIView()
     let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-
-    var oauthswift: OAuthSwift?
 
     // MARK: - Initializers
 
@@ -167,25 +164,6 @@ class LaunchViewController: UIViewController {
                     alert.addAction(dismissAction)
                     self?.present(alert, animated: true, completion: nil)
                 }
-        })
-    }
-}
-
-/// Not currently used, but leaving this code here for now.
-extension LaunchViewController {
-    func doAuthService() {
-        let oauthswift = WebService.oauthSwift()
-        self.oauthswift = oauthswift
-        oauthswift.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: oauthswift)
-
-        let _ = oauthswift.authorize(
-            withCallbackURL: URL(string: "oauth-swift://PhotoSharingApp/flickr")!,
-            success: { credential, response, parameters in
-                let _ = credential.oauthToken
-                let _ = credential.oauthTokenSecret
-        },
-            failure: { error in
-                print(error.description)
         })
     }
 }
