@@ -20,6 +20,8 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library access is needed to save photos to your device.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

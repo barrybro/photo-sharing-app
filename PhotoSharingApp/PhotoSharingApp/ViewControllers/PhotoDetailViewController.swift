@@ -133,8 +133,14 @@ class PhotoDetailViewController: UIViewController {
     }
 
     @objc fileprivate func buttonTapped() {
-        // display action sheet to share photo
-//        let activityItems = [UIActivityIte]
-//        let activityVC = UIActivityViewController(activityItems: <#T##[Any]#>, applicationActivities: <#T##[UIActivity]?#>)
+        if let image = photoImageView.image {
+            let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+            present(activityViewController, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: viewModel.alertTitle, message: viewModel.alertMessage, preferredStyle: .alert)
+            let dismissAction = UIAlertAction(title: viewModel.alertButtonTitle, style: UIAlertActionStyle.default, handler: nil)
+            alert.addAction(dismissAction)
+            present(alert, animated: true, completion: nil)
+        }
     }
 }

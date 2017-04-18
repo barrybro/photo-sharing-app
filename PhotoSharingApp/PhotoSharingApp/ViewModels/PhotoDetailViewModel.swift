@@ -14,6 +14,10 @@ struct PhotoDetailViewModel {
 
     let shareButtonTitle = "Share Photo"
 
+    let alertTitle = "Uh oh!"
+    let alertMessage = "Image missing."
+    let alertButtonTitle = "OK"
+
     // Tags?
     func photoTitle() -> String {
         return photo.title

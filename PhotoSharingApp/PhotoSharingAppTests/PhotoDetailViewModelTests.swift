@@ -46,6 +46,24 @@ class PhotoDetailViewModelTests: XCTestCase {
         XCTAssertEqual(expectedString, viewModel.photoViewCount())
     }
 
+    func testAlertTitle() {
+        let expectedTitle = "Uh oh!"
+        let viewModel = LaunchViewModel()
+        XCTAssertEqual(expectedTitle, viewModel.alertTitle)
+    }
+
+    func testAlertMessage() {
+        let expectedTitle = "Image missing."
+        let viewModel = LaunchViewModel()
+        XCTAssertEqual(expectedTitle, viewModel.alertMessage)
+    }
+
+    func testAlertButtonTitle() {
+        let expectedTitle = "OK"
+        let viewModel = LaunchViewModel()
+        XCTAssertEqual(expectedTitle, viewModel.alertButtonTitle)
+    }
+
     // MARK: - Private
 
     fileprivate func mockViewModel(viewCount: String = "4") -> PhotoDetailViewModel {
