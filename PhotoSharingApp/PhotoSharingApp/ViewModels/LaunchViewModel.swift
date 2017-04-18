@@ -13,7 +13,7 @@ struct LaunchViewModel {
     let loadingTitle = "Loading..."
     let buttonTitle = "View Photo Set"
     let loadingDuration: TimeInterval = 0.33
-    let labelTitle = "LabelTitle"
+    let labelTitle = "This application displays a set of photos I have taken of a friend's wedding in March 2017 at the Hennepin County Government Center."
     let defaultPhotosetID = "72157680286729381"
 
     let alertTitle = "Uh oh!"

@@ -56,6 +56,7 @@ class LaunchViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
         label.textAlignment = .center
+        label.numberOfLines = 0
         label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
         label.text = viewModel.labelTitle
         mainStackView.addArrangedSubview(label)
