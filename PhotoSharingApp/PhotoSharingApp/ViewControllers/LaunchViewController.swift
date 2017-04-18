@@ -13,13 +13,15 @@ class LaunchViewController: UIViewController {
 
     let viewModel: LaunchViewModel
 
-    let mainStackView = UIStackView()
-
+    let label = UILabel()
+    let separatorView = UIView()
+    let viewPhotosButton = UIButton(type: .custom)
     let loadingView = UIView()
-
     let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 
     var oauthswift: OAuthSwift?
+
+    // MARK: - Initializers
 
     init(viewModel: LaunchViewModel) {
         self.viewModel = viewModel
@@ -31,6 +33,8 @@ class LaunchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UIViewController Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,43 +44,48 @@ class LaunchViewController: UIViewController {
         setupConstraints()
     }
 
+    // MARK: - fileprivate methods
+
     fileprivate func setupViews() {
-        view.backgroundColor = UIColor.white
-        setupMainStackView()
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.95)
+        setupLabel()
+        setupSeparatorView()
+        setupButton()
         setupLoadingView()
         setupActivityIndicator()
     }
 
-    fileprivate func setupMainStackView() {
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainStackView.axis = .vertical
-        view.addSubview(mainStackView)
-
-        let label = UILabel()
+    fileprivate func setupLabel() {
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
+        label.backgroundColor = UIColor.clear
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
         label.text = viewModel.labelTitle
-        mainStackView.addArrangedSubview(label)
+        view.addSubview(label)
+    }
 
-        let button = UIButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(viewModel.buttonTitle, for: .normal)
-        button.backgroundColor = UIColor.orange
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitleColor(UIColor.gray, for: .highlighted)
-        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
-        button.addTarget(self, action: #selector(LaunchViewController.buttonTapped), for: .touchUpInside)
-        mainStackView.addArrangedSubview(button)
+    fileprivate func setupSeparatorView() {
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(separatorView)
+        separatorView.backgroundColor = UIColor.gray
+    }
+
+    fileprivate func setupButton() {
+        viewPhotosButton.translatesAutoresizingMaskIntoConstraints = false
+        viewPhotosButton.setTitle(viewModel.buttonTitle, for: .normal)
+        viewPhotosButton.backgroundColor = UIColor(red: 0.0/255.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
+        viewPhotosButton.setTitleColor(UIColor.white, for: .normal)
+        viewPhotosButton.setTitleColor(UIColor.gray, for: .highlighted)
+        viewPhotosButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        viewPhotosButton.addTarget(self, action: #selector(LaunchViewController.buttonTapped), for: .touchUpInside)
+        view.addSubview(viewPhotosButton)
     }
 
     fileprivate func setupLoadingView() {
         view.addSubview(loadingView)
         loadingView.translatesAutoresizingMaskIntoConstraints = false
-        loadingView.backgroundColor = UIColor.black.withAlphaComponent(0.25)
+        loadingView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         loadingView.alpha = 0.0
     }
 
@@ -86,12 +95,27 @@ class LaunchViewController: UIViewController {
     }
 
     fileprivate func setupConstraints() {
-        var constraints: [NSLayoutConstraint] = []
-        constraints.append(mainStackView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor))
-        constraints.append(mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor))
-        constraints.append(mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor))
-        constraints.append(mainStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor))
+        let buttonHeight: CGFloat = 50.0
+        let horizontalMargin: CGFloat = 8.0
+        let verticalMargin: CGFloat = 20.0
+        let separatorHeight: CGFloat = 1.0
 
+        var constraints: [NSLayoutConstraint] = []
+        constraints.append(label.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: verticalMargin))
+        constraints.append(label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalMargin))
+        constraints.append(label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalMargin))
+
+        constraints.append(separatorView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: verticalMargin))
+        constraints.append(separatorView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: horizontalMargin))
+        constraints.append(separatorView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -horizontalMargin))
+        constraints.append(separatorView.bottomAnchor.constraint(lessThanOrEqualTo: viewPhotosButton.topAnchor, constant: -verticalMargin))
+        constraints.append(separatorView.heightAnchor.constraint(equalToConstant: separatorHeight))
+
+        constraints.append(viewPhotosButton.topAnchor.constraint(greaterThanOrEqualTo: label.bottomAnchor))
+        constraints.append(viewPhotosButton.leadingAnchor.constraint(equalTo: view.leadingAnchor))
+        constraints.append(viewPhotosButton.trailingAnchor.constraint(equalTo: view.trailingAnchor))
+        constraints.append(viewPhotosButton.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor))
+        constraints.append(viewPhotosButton.heightAnchor.constraint(equalToConstant: buttonHeight))
 
         constraints.append(loadingView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor))
         constraints.append(loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor))
@@ -147,6 +171,7 @@ class LaunchViewController: UIViewController {
     }
 }
 
+/// Not currently used, but leaving this code here for now.
 extension LaunchViewController {
     func doAuthService() {
         let oauthswift = WebService.oauthSwift()

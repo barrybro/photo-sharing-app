@@ -23,7 +23,7 @@ struct LaunchViewModel {
     func loadPhotoset(showLoadingBlock: () -> Void, completion: @escaping (_ photoset: Photoset?) -> Void) {
         showLoadingBlock()
 
-        // fetch photos and in completion return and call hide
+        // fetch photos and return the photoset in completion()
         WebService.fetchPhotoset(photosetID: defaultPhotosetID) { (photoset: Photoset?) in
             if let photoset = photoset {
                 completion(photoset)

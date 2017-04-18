@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 import SDWebImage
 
 class PhotoTableViewCell: UITableViewCell {
@@ -24,12 +23,13 @@ class PhotoTableViewCell: UITableViewCell {
 
     let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
 
-    fileprivate let photoWH: CGFloat = 50.0
+    fileprivate let photoWH: CGFloat = 60.0
 
     // MARK: - Initializers
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.accessoryType = .disclosureIndicator
         setupViews()
         setupConstraints()
     }
@@ -38,17 +38,19 @@ class PhotoTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - fileprivate methods
+
     fileprivate func setupViews() {
         photoTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(photoTitleLabel)
         photoTitleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
         photoTitleLabel.adjustsFontSizeToFitWidth = true
-        photoTitleLabel.minimumScaleFactor = 0.8
+        photoTitleLabel.minimumScaleFactor = 0.6
 
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(photoImageView)
         photoImageView.backgroundColor = UIColor.gray
-        photoImageView.layer.cornerRadius = 4.0
+        photoImageView.layer.cornerRadius = 8.0
         photoImageView.layer.masksToBounds = true
 
         loadingActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -77,6 +79,8 @@ class PhotoTableViewCell: UITableViewCell {
 
         NSLayoutConstraint.activate(constraints)
     }
+
+    // MARK: - Internal methods
 
     func updateCell() {
         guard let photo = photo else {

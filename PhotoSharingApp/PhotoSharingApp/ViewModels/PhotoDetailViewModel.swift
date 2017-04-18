@@ -7,27 +7,27 @@
 //
 
 import Foundation
+import UIKit
 
 struct PhotoDetailViewModel {
 
     let photo: Photo
 
     let shareButtonTitle = "Share Photo"
-
     let alertTitle = "Uh oh!"
     let alertMessage = "Image missing."
     let alertButtonTitle = "OK"
 
-    // Tags?
-    func photoTitle() -> String {
-        return photo.title
+    func photoTitle() -> NSAttributedString {
+        return NSAttributedString(string: photo.title,
+                                  attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .headline)])
     }
 
     func photoURL() -> String {
         return photo.imageURL
     }
 
-    func photoDateTaken() -> String {
+    func photoDateTaken() -> NSAttributedString {
         // Convert date string from API to Date object
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -39,17 +39,18 @@ struct PhotoDetailViewModel {
         let newFormatter = DateFormatter()
         newFormatter.dateStyle = .medium
 
-        return "Taken on " + newFormatter.string(from: date)
+        let takenOnMessage = "Taken on " + newFormatter.string(from: date)
+        return NSAttributedString(string: takenOnMessage,
+                                  attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)])
     }
 
-    func photoViewCount() -> String {
-        guard let viewNumber = Int(photo.viewCount) else {
-            return "0"
-        }
+    func photoViewCount() -> NSAttributedString {
+        let viewNumber = Int(photo.viewCount) ?? 0
         var countString = photo.viewCount + " view"
         if viewNumber != 1 {
             countString += "s"
         }
-        return countString
+        return NSAttributedString(string: countString,
+                                  attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)])
     }
 }

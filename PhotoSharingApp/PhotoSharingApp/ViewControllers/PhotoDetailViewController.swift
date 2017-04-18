@@ -14,9 +14,10 @@ class PhotoDetailViewController: UIViewController {
     let viewModel: PhotoDetailViewModel
 
     let photoImageView = UIImageView()
-    let titleLabel = UILabel()
-    let viewsLabel = UILabel()
-    let dateLabel = UILabel()
+    let titleLabel = PaddedLabel()
+    let separatorView = UIView()
+    let viewsLabel = PaddedLabel()
+    let dateLabel = PaddedLabel()
     let loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     let mainStackView = UIStackView()
     let shareButton = UIButton(type: .custom)
@@ -32,15 +33,19 @@ class PhotoDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - UIViewController
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = viewModel.photoTitle()
+        title = viewModel.photoTitle().string
         view.backgroundColor = UIColor.white
         
         setupViews()
         setupConstraints()
         loadImage()
     }
+
+    // MARK: - fileprivate
 
     fileprivate func setupViews() {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,9 +55,11 @@ class PhotoDetailViewController: UIViewController {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         shareButton.translatesAutoresizingMaskIntoConstraints = false
         loadingActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
 
         setupMainStackView()
         setupShareButton()
+        setupSeparatorView()
         setupActivityIndicator()
         setupLabels()
     }
@@ -67,35 +74,30 @@ class PhotoDetailViewController: UIViewController {
 
         mainStackView.addArrangedSubview(photoImageView)
         mainStackView.addArrangedSubview(titleLabel)
+        mainStackView.addArrangedSubview(separatorView)
         mainStackView.addArrangedSubview(dateLabel)
         mainStackView.addArrangedSubview(viewsLabel)
+    }
+
+    fileprivate func setupSeparatorView() {
+        separatorView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
+        separatorView.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
     }
 
     fileprivate func setupShareButton() {
         view.addSubview(shareButton)
         shareButton.addTarget(self, action: #selector(PhotoDetailViewController.buttonTapped), for: .touchUpInside)
         shareButton.setTitle(viewModel.shareButtonTitle, for: .normal)
-        shareButton.backgroundColor = UIColor.brown
+        shareButton.backgroundColor = UIColor(red: 0.0/255.0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
         shareButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         shareButton.titleLabel?.adjustsFontSizeToFitWidth = true
         shareButton.titleLabel?.minimumScaleFactor = 0.6
     }
 
     fileprivate func setupLabels() {
-        titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
-        titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.minimumScaleFactor = 0.6
-        titleLabel.text = viewModel.photoTitle()
-
-        dateLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        dateLabel.adjustsFontSizeToFitWidth = true
-        dateLabel.minimumScaleFactor = 0.6
-        dateLabel.text = viewModel.photoDateTaken()
-
-        viewsLabel.font = UIFont.preferredFont(forTextStyle: .body)
-        viewsLabel.adjustsFontSizeToFitWidth = true
-        viewsLabel.minimumScaleFactor = 0.6
-        viewsLabel.text = viewModel.photoViewCount()
+        titleLabel.updateAttributedText(viewModel.photoTitle())
+        dateLabel.updateAttributedText(viewModel.photoDateTaken())
+        viewsLabel.updateAttributedText(viewModel.photoViewCount())
     }
 
     fileprivate func setupActivityIndicator() {
@@ -142,5 +144,45 @@ class PhotoDetailViewController: UIViewController {
             alert.addAction(dismissAction)
             present(alert, animated: true, completion: nil)
         }
+    }
+}
+
+// MARK: - Padded Label Wrapper Class
+
+class PaddedLabel: UIView {
+
+    fileprivate let label = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: CGRect.zero)
+        setupViews()
+        setupConstraints()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    fileprivate func setupViews() {
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.6
+
+        addSubview(label)
+    }
+
+    fileprivate func setupConstraints() {
+        let margin: CGFloat = 8.0
+        var constraints: [NSLayoutConstraint] = []
+        constraints.append(label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: margin))
+        constraints.append(label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -margin))
+        constraints.append(label.topAnchor.constraint(equalTo: topAnchor))
+        constraints.append(label.bottomAnchor.constraint(equalTo: bottomAnchor))
+
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    func updateAttributedText(_ text: NSAttributedString) {
+        label.attributedText = text
     }
 }

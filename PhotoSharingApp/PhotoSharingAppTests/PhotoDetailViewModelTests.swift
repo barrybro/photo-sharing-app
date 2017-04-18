@@ -19,7 +19,7 @@ class PhotoDetailViewModelTests: XCTestCase {
     func testPhotoTitle() {
         let viewModel = mockViewModel()
         let expectedTitle = "title"
-        XCTAssertEqual(expectedTitle, viewModel.photoTitle())
+        XCTAssertEqual(expectedTitle, viewModel.photoTitle().string)
     }
 
     func testPhotoURL() {
@@ -31,36 +31,36 @@ class PhotoDetailViewModelTests: XCTestCase {
     func testPhotoDateTaken() {
         let viewModel = mockViewModel()
         let expectedString = "Taken on Mar 4, 2017"
-        XCTAssertEqual(expectedString, viewModel.photoDateTaken())
+        XCTAssertEqual(expectedString, viewModel.photoDateTaken().string)
     }
 
     func testPhotoViewCountSingleView() {
         let viewModel = mockViewModel(viewCount: "1")
         let expectedString = "1 view"
-        XCTAssertEqual(expectedString, viewModel.photoViewCount())
+        XCTAssertEqual(expectedString, viewModel.photoViewCount().string)
     }
 
     func testPhotoViewCountMultipleViews() {
         let viewModel = mockViewModel()
         let expectedString = "4 views"
-        XCTAssertEqual(expectedString, viewModel.photoViewCount())
+        XCTAssertEqual(expectedString, viewModel.photoViewCount().string)
     }
 
     func testAlertTitle() {
         let expectedTitle = "Uh oh!"
-        let viewModel = LaunchViewModel()
+        let viewModel = mockViewModel()
         XCTAssertEqual(expectedTitle, viewModel.alertTitle)
     }
 
     func testAlertMessage() {
         let expectedTitle = "Image missing."
-        let viewModel = LaunchViewModel()
+        let viewModel = mockViewModel()
         XCTAssertEqual(expectedTitle, viewModel.alertMessage)
     }
 
     func testAlertButtonTitle() {
         let expectedTitle = "OK"
-        let viewModel = LaunchViewModel()
+        let viewModel = mockViewModel()
         XCTAssertEqual(expectedTitle, viewModel.alertButtonTitle)
     }
 

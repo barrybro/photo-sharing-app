@@ -14,6 +14,8 @@ class PhotosListViewController: UITableViewController {
 
     fileprivate let reuseIdentifier: String
 
+    // MARK: - Initializers
+
     init(viewModel: PhotosListViewModel) {
         self.viewModel = viewModel
         reuseIdentifier = viewModel.photoCellReuseIdentifier
@@ -24,6 +26,8 @@ class PhotosListViewController: UITableViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
